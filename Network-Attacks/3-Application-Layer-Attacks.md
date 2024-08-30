@@ -6,9 +6,11 @@
 2. Tham khảo nhật ký truy cập của máy chủ web  về hành vi tương tự
 -> thường thì Attacker sẽ làm fuzz server trước khi bắt đầu tấn công
 ### Finding Directory Fuzzing
-![[Pasted image 20240829190431.png]]
+![Pasted image 20240829190431](https://github.com/user-attachments/assets/d56fa639-9dad-4da6-9782-ebe9b762e137)
+
 Http request
-![[Pasted image 20240829190447.png]]
+![Pasted image 20240829190447](https://github.com/user-attachments/assets/78daca01-7ba5-48c3-b3d7-7469c75c6206)
+
 -> Directory Fuzzing dễ bị phát hiện vì:
 + Máy chủ sẽ liên tục cố gắng truy cập các tệp không tồn tại trên máy chủ web (phản hồi 404).
 + Máy chủ sẽ gửi chúng liên tiếp một cách nhanh chóng.
@@ -26,8 +28,9 @@ merisreal$ cat access.log | awk '$1 == "192.168.10.5"'
 - `http.request and ((ip.src_host == <suspected IP>) or (ip.dst_host == <suspected IP>))`
 - 
 
-![[Pasted image 20240829191539.png]]
-![[Pasted image 20240829191548.png]]
+![Pasted image 20240829191539](https://github.com/user-attachments/assets/7ba0079a-39ff-49bc-b921-c21fecdf47a8)
+
+![Pasted image 20240829191548](https://github.com/user-attachments/assets/d63e226f-e32a-4127-867c-a905dddbeb3c)
 
 Giả sử chúng tôi nhận thấy rằng có rất nhiều yêu cầu được gửi liên tiếp, điều này cho thấy có fuzzing
 
@@ -46,12 +49,12 @@ Trong các HTTP request -> Một vài header tệ kiểu:
 
 ### Finding Strange Host Headers
 
-![[Pasted image 20240829191835.png]]
+![Pasted image 20240829191835](https://github.com/user-attachments/assets/533b0644-9321-456d-9971-0372c64cd528)
+![Pasted image 20240829192128](https://github.com/user-attachments/assets/6a94477c-147f-46c9-94d9-de8be0981ac7)
 
-![[Pasted image 20240829192128.png]]
 Các Header tệ có thể thấy như 127.0.0.1
+![Pasted image 20240829192146](https://github.com/user-attachments/assets/b1ecb7ff-2492-4da4-afb7-8db1a5ad4252)
 
-![[Pasted image 20240829192146.png]]
 admin
 
 https://www.yeswehack.com/learn-bug-bounty/http-header-exploitation
@@ -59,9 +62,10 @@ https://www.yeswehack.com/learn-bug-bounty/http-header-exploitation
 ### Analyzing Code 400s and Request Smuggling
 
 Code 400 -> cho thấy một "yêu cầu xấu" từ phía client
-![[Pasted image 20240829192547.png]]
+![Pasted image 20240829192547](https://github.com/user-attachments/assets/f605df04-a7ec-41c2-aafc-83b852d50f85)
+
 Follow ->
-![[Pasted image 20240829192609.png]]
+![Pasted image 20240829192609](https://github.com/user-attachments/assets/90bed0b8-8309-4bdc-92a5-10c46a2996f9)
 
 cve: https://github.com/dhmosfunk/CVE-2023-25690-POC
 
@@ -69,10 +73,10 @@ Code 200 -> response success
 
 
 ## Cross-Site Scripting (XSS) & Code Injection Detection
+![Pasted image 20240829192850](https://github.com/user-attachments/assets/295950eb-aca2-4444-955b-47fe70567829)
 
-![[Pasted image 20240829192850.png]]
+![Pasted image 20240829193510](https://github.com/user-attachments/assets/0c95a157-61be-45d3-b81d-5b3a52ecf188)
 
-![[Pasted image 20240829193510.png]]
 ->, giả sử có khu vực nhận xét của người dùng trên máy chủ web h. Chúng ta có thể nhận thấy một trong những comment trông giống như sau.
 Code: javascript
 
@@ -88,8 +92,8 @@ Code: javascript
 </script>
 ```
 một số trường hợp kẻ tấn công có thể cố gắng chèn mã vào các trường này như hai ví dụ sau.
+![Pasted image 20240829193901](https://github.com/user-attachments/assets/43c2c25b-abf2-41cf-bddb-3bf0917c62af)
 
-![[Pasted image 20240829193901.png]]
 
 #### Preventing XSS and Code Injection
 + xử lý thông tin đầu vào của người dùng 
@@ -136,8 +140,8 @@ Nói chung, khi một client thiết lập kết nối HTTPs với một máy ch
 Một trong những tấn công phổ biến dựa trên HTTPs là **SSL renegotiation**, trong đó kẻ tấn công sẽ thương lượng phiên kết nối xuống mức mã hóa thấp nhất có thể.
 
 
+![Pasted image 20240830163951](https://github.com/user-attachments/assets/f3cdb7b9-50fa-40dd-bfdc-19f8cbf7a906)
 
-![[Pasted image 20240830163951.png]]
 
 
 |**Handshake Step**|**Relevant Calculations**|
@@ -155,8 +159,8 @@ Một trong những tấn công phổ biến dựa trên HTTPs là **SSL renegot
 ### Finding SSL Renegotiation Attacks
 
 * Man - in -the -middle*
+![Pasted image 20240830164855](https://github.com/user-attachments/assets/d5c6c7b4-e69b-449f-a7b3-91ef91a19a8b)
 
-![[Pasted image 20240830164855.png]]
 ```
 ssl.record.content_type == 22
 ```
@@ -169,7 +173,7 @@ ssl.record.content_type == 22
 
 ### DNS Queries
 Truy vấn DNS được sử dụng khi client muốn phân giải tên miền bằng địa chỉ IP hoặc ngược lại. Đầu tiên, chúng ta có thể khám phá loại truy vấn phổ biến nhất, đó là tra cứu chuyển tiếp (forward lookups)
-![[Pasted image 20240830165601.png]]
+  ![Pasted image 20240830165601](https://github.com/user-attachments/assets/cc6b99e1-cb58-4b7e-b610-9b2bc928ab87)
 
 - Request:
     - `Where is google.com?`
@@ -194,7 +198,7 @@ Ngược lại với cái trên khi đã biết địa chỉ IP và muốn tìm 
     
     - `google.com :)`
 
-![[Pasted image 20240830170246.png]]
+![Pasted image 20240830170246](https://github.com/user-attachments/assets/ed20043d-8a37-47b1-8cca-7ca4943d1dfc)
 
 - **Query Initiation** | Client gửi một truy vấn **DNS reverse** đến **DNS resolver** (máy chủ) đã được cấu hình với địa chỉ **IP** mà nó muốn tìm tên miền.
 - **Reverse Lookup Zones** | **DNS resolver** kiểm tra xem nó có quyền quản lý vùng tra cứu ngược (reverse lookup zone) tương ứng với dải địa chỉ **IP** được xác định bởi địa chỉ **IP** nhận được hay không. Ví dụ, với địa chỉ **192.0.2.1**, vùng tra cứu ngược sẽ là **1.2.0.192.in-addr.arpa**.
@@ -221,17 +225,19 @@ https://book.hacktricks.xyz/network-services-pentesting/pentesting-dns
 
 => cho phép xác định tất cả các bản ghi DNS được liên kết với một miền để khám phá các lỗ hổng, lập bản đồ các thiết bị kết nối Internet của công ty và hiển thị các dịch vụ ẩn.
 
-![[Pasted image 20240830170638.png]]
+![Pasted image 20240830170638](https://github.com/user-attachments/assets/29c89b42-cfcd-4b36-b3a3-a77c7fa747b0)
 
-![[Pasted image 20240830170646.png]]
+![Pasted image 20240830170646](https://github.com/user-attachments/assets/3cec60b1-f3e8-437c-8055-21005463984f)
 
 => Đây sẽ là dấu hiệu rõ ràng về việc liệt kê DNS và thậm chí có thể là việc liệt kê tên miền phụ từ Attacker
 
 ### Finding DNS Tunneling
-![[Pasted image 20240830170930.png]]
+![Pasted image 20240830170930](https://github.com/user-attachments/assets/aae119d3-613b-44f6-8371-aee0542a0468)
+
 Đôi khi nó thường bị mã hóa nhiều lớp 
 ![[Pasted image 20240830170946.png]]
 
+![Pasted image 20240830170946](https://github.com/user-attachments/assets/4504776d-3963-47c2-842c-78443f6b96af)
 
 => Đặt biệt cần phải lưu ý tới các DNS dạng IPFS
 
@@ -240,8 +246,8 @@ https://developers.cloudflare.com/web3/ipfs-gateway/concepts/ipfs/
 
 
 ## Strange Telnet & UDP Connections
+![Pasted image 20240830171104](https://github.com/user-attachments/assets/32bef040-42a7-4161-8a59-edf3c22616f3)
 
-![[Pasted image 20240830171104.png]]
 **Telnet** là một giao thức mạng cho phép phiên giao tiếp tương tác hai chiều giữa hai thiết bị qua mạng. Giao thức này được phát triển vào những năm 1970 và được định nghĩa trong **RFC 854**. Tuy nhiên, việc sử dụng **Telnet** đã giảm đáng kể so với **SSH**.
 
 Trong nhiều trường hợp cũ, như các máy chạy **Windows NT**, chúng có thể vẫn sử dụng **Telnet** để cung cấp khả năng điều khiển từ xa cho **Microsoft Terminal Services**.
@@ -250,42 +256,44 @@ Tuy nhiên, cần luôn cảnh giác với các liên lạc **Telnet** kỳ lạ
 
 ### Finding Traditional Telnet Traffic Port 23
 
+  ![Pasted image 20240830171221](https://github.com/user-attachments/assets/9d6af677-ea2f-4b0d-a2ea-cd3e66ddde47)
 
-![[Pasted image 20240830171221.png]]
 
 Lưu lượng truy cập telnet có xu hướng được giải mã và có thể dễ dàng kiểm tra, nhưng giống như ICMP, DNS và các phương pháp tạo đường hầm khác, kẻ tấn công có thể mã hóa và mã hóa hoặc làm xáo trộn văn bản này :)
 ![[Pasted image 20240830171258.png]]
+![Pasted image 20240830171258](https://github.com/user-attachments/assets/fde75262-e562-4434-bf57-e1214e99dac3)
 
 ### Unrecognized TCP Telnet in Wireshark
 
 Telnet chỉ là một giao thức liên lạc và do đó kẻ tấn công có thể dễ dàng chuyển sang cổng khác.
-![[Pasted image 20240830171337.png]]
-=> Nhiều liên lạc qua cổng 9999
-![[Pasted image 20240830171357.png]]
+![Pasted image 20240830171337](https://github.com/user-attachments/assets/b1985f6d-f76f-46a6-a719-a960f64ee206)
 
-![[Pasted image 20240830171405.png]]
+=> Nhiều liên lạc qua cổng 9999
+![Pasted image 20240830171357](https://github.com/user-attachments/assets/da4ca62f-0de7-4ae2-8ec6-6436e8e51cd5)
+
+![Pasted image 20240830171405](https://github.com/user-attachments/assets/b4aea87d-caaf-4899-b13d-08ba69f877e7)
 
 ### Telnet Protocol through IPv6
 
 Trừ khi mạng cục bộ của chúng ta được định cấu hình để sử dụng IPv6, việc quan sát lưu lượng IPv6 có thể là dấu hiệu cho thấy các hành động xấu trong môi trường -> có thể nhận thấy việc sử dụng địa chỉ IPv6 cho telnet như sau.
+![Pasted image 20240830171446](https://github.com/user-attachments/assets/f44d6a16-5294-4bd2-aa42-7b98e4a5949b)
 
-![[Pasted image 20240830171446.png]]
 => fillter TELNET
+![Pasted image 20240830171507](https://github.com/user-attachments/assets/d2104471-4a44-467d-84ad-8b5d5af9d655)
 
-![[Pasted image 20240830171507.png]]
 => 
-![[Pasted image 20240830171515.png]]
+![Pasted image 20240830171515](https://github.com/user-attachments/assets/cf13f082-d3c2-4ed4-bdca-a4fc8b6c3ca1)
 
 
 ### Watching UDP Communications
 
 Mặt khác, attackers có thể chọn sử dụng kết nối UDP qua TCP 
+![Pasted image 20240830171551](https://github.com/user-attachments/assets/b021b236-9aac-45f2-9ff9-307d7e4063e3)
 
-![[Pasted image 20240830171551.png]]
 
 *Một trong những khía cạnh khác biệt lớn nhất giữa TCP và UDP là UDP không có kết nối và cung cấp khả năng truyền nhanh. *
+![Pasted image 20240830171615](https://github.com/user-attachments/assets/702ecb96-c8e4-464e-a14b-7ccb9c2a3ac7)
 
-![[Pasted image 20240830171615.png]]
 thay vì chuỗi SYN, SYN/ACK, ACK, các thông tin liên lạc sẽ được gửi ngay lập tức đến người nhận. 
+![Pasted image 20240830171640](https://github.com/user-attachments/assets/a01cc31b-c278-4023-acb5-df87f422cf90)
 
-![[Pasted image 20240830171640.png]]
