@@ -6,7 +6,7 @@ https://www.trueneutral.eu/2015/wireshark-frags-1.html
 Phân mảnh là phương pháp để các host chính thống giao tiếp các tập dữ liệu lớn với nhau bằng cách chia nhỏ các gói tin và ghép lại chúng khi đến đích. 
 Điều này thường được thực hiện thông qua việc thiết lập maximum transmission unit (MTU). MTU được sử dụng như tiêu chuẩn để chia các gói tin lớn thành các kích thước bằng nhau để phù hợp với toàn bộ việc truyền tải. Cần lưu ý rằng gói tin cuối cùng sẽ có kích thước nhỏ hơn. Trường này cung cấp hướng dẫn cho host đích về cách ghép lại các gói tin này theo thứ tự hợp lý.
 
-![[Pasted image 20240823165208.png]]
+![Pasted image 20240823165208](https://github.com/user-attachments/assets/99305474-110e-4939-a4bc-0741010add47)
 
 - **Disrupt reassembly** – Gửi các fragments bị biến dạng gây ra lỗi hoặc sự cố trong quá trình tái tạo, dẫn đến denial-of-service.
 - **Bypass firewalls** – Né tránh các quy tắc firewall bằng cách gửi các cuộc tấn công trong các gói tin phân mảnh mà không bị kiểm tra.
@@ -21,7 +21,7 @@ ví dụ
 nmap -f 10 <host ip>
 ```
 làm như vậy chúng sẽ tạo ra các gói IP có kích thước tối đa là 10. Việc thấy rất nhiều phân mảnh từ máy chủ có thể là dấu hiệu của cuộc tấn công này và nó sẽ giống như sau
-![[Pasted image 20240823165050.png]]
+![Pasted image 20240823165050](https://github.com/user-attachments/assets/5ef315a2-7fb7-4b78-9b70-a985a5069544)
 
 
 
@@ -66,11 +66,15 @@ Trong phân tích lưu lượng mạng, việc xem xét các trường IP nguồ
 Có thể nhận biết:
 + Phân mảnh ban đầu từ một địa chỉ giả
 + Một số lưu lượng TCP từ địa chỉ nguồn hợp pháp
-![[Pasted image 20240823172307.png]]Thứ hai, trong cuộc tấn công này, kẻ tấn công có thể đang cố gắng che giấu địa chỉ của họ bằng mồi nhử, nhưng phản hồi cho nhiều cổng đã đóng sẽ vẫn hướng tới chúng bằng cờ RST được biểu thị cho TCP.
+
+![Pasted image 20240823172307](https://github.com/user-attachments/assets/c94662d2-8d9a-4539-9760-8c280a607ccb)
+ng]]Thứ hai, trong cuộc tấn công này, kẻ tấn công có thể đang cố gắng che giấu địa chỉ của họ bằng mồi nhử, nhưng phản hồi cho nhiều cổng đã đóng sẽ vẫn hướng tới chúng bằng cờ RST được biểu thị cho TCP.
 
 -> **Phản hồi với cờ TCP RST**: Mặc dù các cổng đóng sẽ gửi phản hồi với cờ TCP RST, nhưng các phản hồi này cũng đến các địa chỉ IP giả và địa chỉ IP thực của kẻ tấn công.
-![[Pasted image 20240823172457.png]]
-![[Pasted image 20240823172505.png]]
+![Pasted image 20240823172457](https://github.com/user-attachments/assets/099f9458-f8df-4211-8909-7fe60557e62d)
+![Pasted image 20240823172505](https://github.com/user-attachments/assets/5156ca0c-619a-4188-8fc7-d0710ec02acc)
+
+
 -> Attacker phải tiết lộ địa chỉ nguồn thực sự của chúng để biết rằng một cổng đang mở -> kì lạ nên có thể xác định được cuộc taasn công
 
 #### Finding Random Source Attacks
@@ -78,13 +82,14 @@ Có thể nhận biết:
 -> cuộc tấn công từ chối dịch vụ thông qua việc giả mạo địa chỉ nguồn và đích. Một trong những ví dụ chính và nổi bật là  Finding Random Source Attacks
 
 Nhiều máy chủ sẽ gửi ping đến một máy chủ không tồn tại, và máy chủ bị ping sẽ trả ping lại tất cả các máy chủ khác mà không nhận được phản hồi
-![[Pasted image 20240823173154.png]]
+![Pasted image 20240823173154](https://github.com/user-attachments/assets/177882ae-3498-449d-8e30-6a5eb96dec15)
+
 Attacker có thể sử dụng phân mảng để làm cạn kiệ tài nguyên
-![[Pasted image 20240823173228.png]]
+![Pasted image 20240823173228](https://github.com/user-attachments/assets/c163061d-ef79-412c-8d92-cbaf206298be)
 
 Còn với LAND ATTACK
 Thay vì giả mạo địa chỉ nguồn giống với địa chỉ đích, kẻ tấn công có thể chọn ngẫu nhiên chúng
-![[Pasted image 20240823173258.png]]
+![Pasted image 20240823173258](https://github.com/user-attachments/assets/88baa1cc-41cf-49b8-8ecc-d5893a04019d)
 
 => Một vài dấu hiệu dễ nhận biết
 1. Single Port Utilization from random hosts: chỉ sử dụng một cổng duy nhất để thực hiện các cuộc tấn công hoặc quét từ nhiều địa chỉ IP khác nhau, Các địa chỉ IP xuất phát từ nhiều nguồn khác nhau, có thể là ngẫu nhiên hoặc được giả mạo.
@@ -93,21 +98,23 @@ Thay vì giả mạo địa chỉ nguồn giống với địa chỉ đích, k�
 
 #### Finding Smurf Attacks
 https://techofide.com/blogs/what-is-smurf-attack-what-is-the-denial-of-service-attack-practical-ddos-attack-step-by-step-guide/
+![Pasted image 20240823173738](https://github.com/user-attachments/assets/069cc691-e383-498a-a905-4d03347b2976)
 
-![[Pasted image 20240823173738.png]]
 ->
-![[Pasted image 20240823173751.png]]
+![Pasted image 20240823173751](https://github.com/user-attachments/assets/ffcd5bf4-b818-4341-b561-6a373ea63f12)
 
  một loại tấn công DDoS khai thác các Internet Protocol (IP) broadcast addresses Protocol (IP) để phát đi một số lượng lớn các yêu cầu đến địa chỉ IP mục tiêu từ nhiều nguồn khác nhau. Attacker gửi một số lượng lớn các yêu cầu Internet Control Message Protocol (ICMP) echo (ping) đến broadcast address của một mạng, làm cho các yêu cầu này có vẻ như đến từ địa chỉ IP của mục tiêu. Các yêu cầu sau đó được truyền đến mọi thiết bị trong mạng, tạo ra một lượng lớn lưu lượng có thể làm quá tải tài nguyên của mục tiêu và khiến nó bị sập.
- ![[Pasted image 20240823173950.png]]
+ ![Pasted image 20240823173950](https://github.com/user-attachments/assets/27a041d1-7dc5-4f41-9a8a-a943a6653394)
+
  nhiều máy chủ khác nhau đang ping máy chủ duy nhất và trong trường hợp này, nó thể hiện bản chất cơ bản của các cuộc tấn công SMURF
-![[Pasted image 20240823173959.png]]
+![Pasted image 20240823173959](https://github.com/user-attachments/assets/7b99f416-4c39-43d2-a10c-88e2bf3fe4ee)
 
 
 ## IP Time-to-Live Attacks
 
 Về cơ bản, Attacker sẽ cố tình đặt TTL rất thấp trên các gói IP -> trốn tránh tường lửa, IDS và hệ thống IPS.
-![[Pasted image 20240829181252.png]]
+![Pasted image 20240829181252](https://github.com/user-attachments/assets/041f5e87-c803-4f23-9112-33fa2d573cde)
+
 1. Tạo các IP packet với giá trị TTL thấp (1,2,3..)
 2. Qua mỗi host mà nó đi qua, TTL sẽ giảm 1 đơn vị cho tới khi nó = 0
 3. Khi =0, thì packet sẽ mất, Attacker sẽ cố làm nó biến mất khi nó sắp tới firewall hay filltering system
@@ -115,22 +122,25 @@ Về cơ bản, Attacker sẽ cố tình đặt TTL rất thấp trên các gói
 
 #### Finding Irregularities in IP TTL
 Hầu hết attacker sử dụng ttl cho port scanning:
-![[Pasted image 20240829181631.png]]
+![Pasted image 20240829181631](https://github.com/user-attachments/assets/69f814e4-75e2-4d59-8213-4539922f5bfc)
+
 Và khi có SYN,ACK trả về cho attacker từ một service của ta -> Attacker thành công trốn được firewall
-![[Pasted image 20240829181854.png]]
+![Pasted image 20240829181854](https://github.com/user-attachments/assets/82619d9c-f0a7-4858-8080-40be8472b7c7)
 
 -> Cách phát hiện rất đơn giản "**TTL value rất thấp trong số các gói tin này** "
-![[Pasted image 20240829181929.png]]
+![Pasted image 20240829181929](https://github.com/user-attachments/assets/4692721c-33de-4584-8f59-d93d6dffb83e)
+
 Do đó cần thêm bộ lọc TTL giá trị thấp
 
 
 ## TCP Handshake Abnormalities
 
 Đầu tiên, đâu là hành vi bình thường
-![[Pasted image 20240829182032.png]]
+![Pasted image 20240829182032](https://github.com/user-attachments/assets/19c2a79b-ece1-4a12-a67c-4eb50a4e0b2a)
+
 https://github.com/Merisreal/Digital-Forensics-and-Incident-Response/blob/main/Note%20Analyst%20Tools%20/Wireshark%20Note/%20Traffic%20Analysis/Nmap%20Scans.md
 
-![[Pasted image 20240829182224.png]]
+![Pasted image 20240829182224](https://github.com/user-attachments/assets/2f43183e-43f4-46f5-9d07-cc1496ebd8ee)
 
 TCP FLAG:
 - **URG (Urgent):** Cờ này được dùng để đánh dấu tính khẩn cấp của dữ liệu hiện tại trong luồng.  
@@ -163,7 +173,8 @@ https://viblo.asia/p/nmap-port-scan-cac-phuong-phap-quet-cong-tu-co-ban-den-nang
 + Ví dụ điển hình cho việc nmap scanning
 + Nếu PORT open -> ACK
 + Nếu PORT close -> RST
-![[Pasted image 20240829182652.png]]
+![Pasted image 20240829182652](https://github.com/user-attachments/assets/e2c7ea5c-4b3f-49bc-9fec-63f176872b23)
+
 Có 2 loại quét chính:
 + `SYN Scans` - Trong các lần quét này, hành vi sẽ như chúng ta thấy, tuy nhiên kẻ tấn công sẽ kết thúc bắt tay trước bằng cờ RST.
 + `SYN Stealth Scans` - Trong trường hợp này, kẻ tấn công sẽ cố gắng tránh bị phát hiện bằng cách chỉ hoàn thành một phần quá trình bắt tay TCP
@@ -176,7 +187,7 @@ Có 2 trường hợp:
 + Nếu cổng bị đóng - Hệ thống sẽ phản hồi bằng gói RST
 -> Cách này gửi gói TCP với tất cả các cờ được tắt, nếu cổng mở hoặc bị tường lửa chặn, ta sẽ không thể nhận được phản hồi, tuy nhiên nếu cổng đóng, ta nhận được phản hồi RST/ACK. Vì vậy, nó không thể chỉ ra chắc chắn là các cổng này đang mở, vì có thể bị chặn bởi firewall.
 
-![[Pasted image 20240829182823.png]]
+![Pasted image 20240829182823](https://github.com/user-attachments/assets/f46af811-38f8-4b81-a3b7-92b585d7f13f)
 
 ### Qá nhìu ACKs
 
@@ -185,19 +196,20 @@ ACK Scan
 Trong trường hợp quét ACK, các kết nối TCP sẽ hoạt động như sau.:
 + Nếu cổng mở - Máy bị ảnh hưởng sẽ không phản hồi hoặc sẽ phản hồi bằng gói RST
 + Nếu cổng bị đóng - Máy bị ảnh hưởng sẽ phản hồi bằng gói RST.
-![[Pasted image 20240829183009.png]]
+![Pasted image 20240829183009](https://github.com/user-attachments/assets/b57c9016-3f50-4c48-a073-5a43e4aa4137)
 
 
 Sử dụng cách này cho ta xác định được quy tắc tường lửa nếu có tường lửa được thiết lập. Ví dụ, nếu gửi gói đến và tường lửa không chặn, ta nhận được gói với cờ ACK được bật, tuy nhiên, nếu tường lửa chặn 1 số cổng, ta có thể dựa vào đây để nhận biết
-![[Pasted image 20240829183145.png]]
+![Pasted image 20240829183145](https://github.com/user-attachments/assets/bd690020-7e71-48f8-9fe7-65aa94fc5e1c)
+
 -> 
-![[Pasted image 20240829183151.png]]
+![Pasted image 20240829183151](https://github.com/user-attachments/assets/e3489278-d4a3-4789-b754-817d8cd586c9)
 
 ### Qá nhìu FINs
 
 Nếu cổng mở - Không phản hồi. 
 Nếu cổng bị đóng -  Phản hồi bằng gói RST.
-![[Pasted image 20240829183254.png]]
+![Pasted image 20240829183254](https://github.com/user-attachments/assets/97aa6c82-4f2a-4026-a58a-6373e1eaa279)
 
 Cách này gửi gói TCP với cờ FIN được đặt, sẽ không nhận được phản hồi nào nếu cổng đang mở hoặc do tường lửa chặn. Tuy nhiên nếu cổng đóng, ta nhận được phản hồi RST/ACK từ đó có thể suy ra được cổng đang mở hay bị chặn
 
@@ -205,7 +217,8 @@ Cách này gửi gói TCP với cờ FIN được đặt, sẽ không nh
 
 Nếu cổng mở - Không phản hồi or RST
 Nếu cổng bị đóng -  Phản hồi bằng gói RST.
-![[Pasted image 20240829183345.png]]
+![Pasted image 20240829183345](https://github.com/user-attachments/assets/0ca72bc8-0599-472e-920d-4d799e4edf3e)
+
 Cách này gửi các gói với cờ FIN, PSH, URG được đặt. Tương tự, ta nhận được các phản hồi nếu cổng mở đóng như 2 cách trên.
 
 
@@ -220,20 +233,21 @@ TCP không cung cấp mức độ bảo vệ để ngăn chặn các máy chủ 
 - **Attacker sẽ sửa đổi gói TCP để chứa cờ RST nhằm chấm dứt kết nối.**
 - **Attacker sẽ xác định destination port trùng với một port đang được sử dụng bởi một trong các máy của chúng ta.**
 
-![[Pasted image 20240829184009.png]]
+![Pasted image 20240829184009](https://github.com/user-attachments/assets/38607a8a-f518-4326-a30c-0d77ffe8508b)
 
 
 Một cách để xác minh rằng đây thực sự là một TCP RST attack -> (MAC address) của thiết bị gửi các gói TCP RST này. Giả sử địa chỉ IP 192.168.10.4 đã được đăng ký với địa chỉ MAC aa:aa:aa:aa:aa
 trong danh sách thiết bị mạng của chúng ta, nhưng chúng ta lại phát hiện một địa chỉ MAC hoàn toàn khác đang gửi các gói TCP RST, như sau:
 
-![[Pasted image 20240829184127.png]]
+![Pasted image 20240829184127](https://github.com/user-attachments/assets/93b1f7dc-85ce-474c-8a5b-839cc6ba0472)
 
 -> TCP RST Attack. Tuy nhiên, cần lưu ý rằng attacker có thể giả mạo địa chỉ MAC của họ để né tránh sự phát hiện. Trong trường hợp này, chúng ta có thể nhận thấy (retransmissions) và các vấn đề khác như đã thấy trong phần ARP poisoning.
 
 ## TCP Connection Hijacking
 
 https://medium.com/@R00tendo/tcp-connection-hijacking-deep-dive-9bbe03fce9a9
-![[Pasted image 20240829184651.png]]
+![Pasted image 20240829184651](https://github.com/user-attachments/assets/74960c62-a478-46a6-b34d-5b8be0a7a0f2)
+
 Ba gói tin đầu tiên hoàn tất quá trình bắt tay 3 bước (3-way handshake).
 
 Client gửi dữ liệu đến server với các giá trị SEQ và ACK của gói ACK cuối cùng bị hoán đổi (do chính client gửi).
@@ -249,7 +263,7 @@ Do đó Attacker  dự đoán số thứ tự (sequence number) để tiêm các
 
 Kẻ tấn công sẽ cần chặn các gói ACK không cho tới được máy bị ảnh hưởng để tiếp tục chiếm quyền điều khiển. Họ thực hiện việc này bằng cách trì hoãn hoặc chặn các gói ACK. Do đó, cuộc tấn công này thường được thực hiện cùng với ARP poisoning, và chúng ta có thể nhận thấy điều này trong quá trình phân tích lưu lượng mạng.
 
-![[Pasted image 20240829185059.png]]
+![Pasted image 20240829185059](https://github.com/user-attachments/assets/9399f308-e658-426d-97e4-d4a0aae53148)
 
 
 ## ICMP Tunneling
@@ -264,13 +278,16 @@ Trong trường hợp ICMP tunneling, attacker sẽ đính kèm dữ liệu mà 
 ## Finding ICMP Tunneling
 
 + Một packet ICMP  sẽ tầm 48 bytes
-+![[Pasted image 20240829185923.png]]
+![Pasted image 20240829185923](https://github.com/user-attachments/assets/ccac500c-7d0e-4b34-90ce-a2c7c4274ce6)
 
 + Cho nên bất kì packet ICMP  nào > 48 bytes -> data đang truyền
-![[Pasted image 20240829185929.png]]
-![[Pasted image 20240829185932.png]]
+![Pasted image 20240829185929](https://github.com/user-attachments/assets/d2a0e4de-b0a5-4af0-8968-b486881fd153)
+
+![Pasted image 20240829185932](https://github.com/user-attachments/assets/eb04e676-1c62-4d80-af72-52e90af3aa86)
+
 Hay attacker có thể mã hóa 
-![[Pasted image 20240829185943.png]]
+![Pasted image 20240829185943](https://github.com/user-attachments/assets/58885aa5-02f8-4878-b368-103cb574c082)
+
 ## Preventing ICMP Tunneling
 + Kiểm tra các yêu cầu request và replies cho dữ liệu
 + Không làm được thì Block ICMP request
